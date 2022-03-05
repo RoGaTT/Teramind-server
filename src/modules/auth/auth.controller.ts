@@ -55,7 +55,7 @@ export class AuthController {
     response
       .cookie('access_token', token, {
         httpOnly: false,
-        domain: 'teramind.altdenter.ru', // your domain here!
+        domain: '.altdenter.ru', // your domain here!
         expires: new Date(Date.now() + 1000 * 60 * 60 * 24),
       })
       .send({ success: true });
