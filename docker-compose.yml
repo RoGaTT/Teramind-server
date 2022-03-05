@@ -30,6 +30,9 @@ services:
             - ${MYSQL_PORT}:3306
         networks:
             - network
+        env_file:
+            - .env.local
+            - .env
         environment:
             - MYSQL_ROOT_PASSWORD
             - MYSQL_DATABASE
