@@ -55,7 +55,12 @@ export class AuthController {
     response
       .cookie('access_token', token, {
         httpOnly: false,
-        domain: '.altdenter.ru', // your domain here!
+        domain: 'localhost:3000', // your domain here!
+        expires: new Date(Date.now() + 1000 * 60 * 60 * 24),
+      })
+      .cookie('access_token', token, {
+        httpOnly: false,
+        domain: 'localhost:8080', // your domain here!
         expires: new Date(Date.now() + 1000 * 60 * 60 * 24),
       })
       .send({ success: true });
