@@ -53,11 +53,6 @@ export class AuthController {
     console.log(hostname);
 
     response
-      // .cookie('access_token', token, {
-      //   httpOnly: false,
-      //   domain: 'localhost:3000', // your domain here!
-      //   expires: new Date(Date.now() + 1000 * 60 * 60 * 24),
-      // })
       .cookie('access_token', token, {
         httpOnly: false,
         domain: 'teramind.altdenter.ru', // your domain here!
