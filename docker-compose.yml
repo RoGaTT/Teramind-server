@@ -1,0 +1,42 @@
+version: '3.4'
+            
+services:
+    app:
+        restart: always
+        depends_on:
+            - mysql
+        ports:
+            - ${APP_PORT}:8080
+        networks:
+            - network
+        volumes:
+            - ./:/app
+            - uploads:/data/uploads
+        env_file:
+            - .env.local
+            - .env
+        build: 
+            context: ./
+            dockerfile: ./Dockerfile
+        command: yarn start:dev
+
+
+    mysql:
+        image: mysql:8
+        restart: always
+        volumes:
+            - mysql:/var/lib/mysql
+        ports:
+            - ${MYSQL_PORT}:3306
+        networks:
+            - network
+        environment:
+            - MYSQL_ROOT_PASSWORD
+            - MYSQL_DATABASE
+
+networks:
+    network:
+
+volumes:
+    uploads:
+    mysql:
