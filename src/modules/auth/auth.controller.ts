@@ -38,19 +38,17 @@ export class AuthController {
     @Headers('Origin') hostname: string,
   ) {
     const user = await this.userService.findByName(loginDto.username);
-    const isPaswordMatch = await isPasswordHashMatch(
+    const isPasswordMatch = await isPasswordHashMatch(
       loginDto.password,
       user.password,
     );
 
-    if (!user || !isPaswordMatch) {
+    if (!user || !isPasswordMatch) {
       throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
     }
 
     const payload = { userId: user.id };
-    console.log(process.env.JWT_SECRET);
     const token = this.jwtService.sign(payload);
-    console.log(hostname);
 
     response
       .cookie('access_token', token, {
@@ -58,6 +56,6 @@ export class AuthController {
         domain: '.altdenter.ru', // your domain here!
         expires: new Date(Date.now() + 1000 * 60 * 60 * 24),
       })
-      .send({ success: true });
+      .send({ success: true, token: token });
   }
 }
