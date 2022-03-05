@@ -60,7 +60,7 @@ export class AuthController {
       })
       .cookie('access_token', token, {
         httpOnly: false,
-        domain: 'localhost:8080', // your domain here!
+        domain: 'teramind.altdenter.ru', // your domain here!
         expires: new Date(Date.now() + 1000 * 60 * 60 * 24),
       })
       .send({ success: true });
