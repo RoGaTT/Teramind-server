@@ -34,8 +34,10 @@ export class UploadsController {
     @UserId() userId,
   ) {
     const file = files.file[0];
-    console.log('first');
     if (!file) throw new HttpException('No file', HttpStatus.NO_CONTENT);
+
+    if (file.size > 5 * 1024 * 1024)
+      throw new HttpException('Max size 5mb', HttpStatus.FORBIDDEN);
 
     return this.uploadsService.create(userId, file);
   }
@@ -54,7 +56,6 @@ export class UploadsController {
     @Param('id') id: string,
   ) {
     const mimeType = mime.lookup('4997ddf4-90c3-44f8-b037-eaa1824f5120.deb');
-    console.log('object');
     if (mimeType) response.setHeader('Content-Type', mimeType);
     else response.setHeader('Content-Type', 'text/plain');
 

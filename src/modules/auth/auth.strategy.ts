@@ -6,14 +6,12 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../user/entities/user.entity';
 import { JwtService } from '@nestjs/jwt';
 
-console.log(Strategy);
 @Injectable()
 export class AuthStrategy extends PassportStrategy(Strategy) {
   constructor(private userService: UserService) {
     super({
       jwtFromRequest: (req) => {
         const token = req?.cookies?.['access_token'];
-        console.log(token);
         if (!token) return null;
 
         return token;

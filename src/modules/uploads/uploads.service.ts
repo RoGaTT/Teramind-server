@@ -16,16 +16,15 @@ export class UploadsService {
     private userService: UserService,
   ) {}
   async create(userId: string, file: Express.Multer.File) {
-    if (
-      await this.uploadRepository.findOne({
-        where: {
-          user: userId,
-          filename: file.originalname,
-          size: file.size,
-        },
-      })
-    ) {
-      throw new HttpException('File already exists', HttpStatus.NOT_ACCEPTABLE);
+    const existingFile = await this.uploadRepository.findOne({
+      where: {
+        user: userId,
+        filename: file.originalname,
+        size: file.size,
+      },
+    });
+    if (existingFile) {
+      return existingFile;
     }
     const user = await this.userService.findById(userId);
     const upload = new Upload();
@@ -61,7 +60,6 @@ export class UploadsService {
         user: userId,
       },
     });
-    console.log(upload);
     return upload;
   }
 
