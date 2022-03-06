@@ -15,7 +15,13 @@ export class UploadsService {
     private uploadRepository: Repository<Upload>,
     private userService: UserService,
   ) {}
-  async create(userId: string, file: Express.Multer.File) {
+  async create(
+    userId: string,
+    file: Express.Multer.File,
+  ): Promise<{
+    data: Upload;
+    isExist: boolean;
+  }> {
     const existingFile = await this.uploadRepository.findOne({
       where: {
         user: userId,
@@ -24,7 +30,10 @@ export class UploadsService {
       },
     });
     if (existingFile) {
-      return existingFile;
+      return {
+        data: existingFile,
+        isExist: true,
+      };
     }
     const user = await this.userService.findById(userId);
     const upload = new Upload();
@@ -34,7 +43,10 @@ export class UploadsService {
     await this.uploadRepository.save(upload);
 
     fs.writeFileSync(this.getFilePath(upload.id, upload.filename), file.buffer);
-    return upload;
+    return {
+      data: upload,
+      isExist: false,
+    };
   }
 
   // saveFile()
